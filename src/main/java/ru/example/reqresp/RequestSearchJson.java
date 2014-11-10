@@ -1,9 +1,8 @@
 package ru.example.reqresp;
 
-public class RequestJson {
+public class RequestSearchJson {
 
     private String requestStr;
-
     public String getRequestStr() {
         return requestStr;
     }

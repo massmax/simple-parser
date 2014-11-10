@@ -1,8 +1,9 @@
-<html ng-app="testApp">
+<html ng-app="testApp" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Parser</title>
     <link href='./css/style.css' rel="stylesheet" type="text/css" />
+    <!--<link href="./css/font-awesome.min.css" rel="stylesheet" />-->
     <link rel="stylesheet" href="./bootstrap-3.2.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="./bootstrap-3.2.0/css/bootstrap-theme.min.css" />
     <script src="./js/angular.js"></script>
@@ -14,39 +15,77 @@
 <div ng-controller="testController">
 	<div id="add-task-panel" class="fadein fadeout showpanel panel">
 		<div class="panel-heading">
-            <span class="glyphicon glyphicon-cog"></span><span style="font-size: 1.5em"> Парсер резюме с RABOTA.E1.RU</span>
+            <span class="glyphicon glyphicon-cog"></span><span style="font-size: 1.5em"> Резюме с RABOTA.E1.RU</span>
 		</div>
 		<div class="panel-body">
             <form>
-            Поиск по слову:
-			<div class="task" ng-repeat="item in items">
-					<input setfocus="{{$last}}" ng-keydown="keyPress($event);" size="70" placeholder="Введите слово..." type="text" ng-model="item.tex" id='ID{{$index}}'/>
-			</div>
-             </form><form>
-                  <button class="btn btn-primary" type="button" ng-click="searchStr()" ><span class="glyphicon glyphicon-search"></span>  Найти</button>
-                  <!--<button class="btn btn-info" type="button" ng-click="reloadRoute()" ><span class="glyphicon glyphicon-refresh"></span>  Сбросить</button>-->
-                </form>
-            <div ng-show="toggle">
-                <!-- таблица -->
-                <br/>
-                <h3><b>Банк резюме</b></h3>
-                <div ng-show="resumeTable">
-                    <table class="table table-hover" >
-                        <tr>
-                            <th>Title</th>
-                            <th>Title-text</th>
-                            <th>Pay</th>
-                        </tr>
-                        <tr ng-repeat="obj in objList">
-                            <td>{{obj.emitent}}</td>
-                            <td>{{obj.emissionDate|date:'dd-MM-yyyy'}}</td>
-                            <td>{{obj.emSgtin}}</td>
-                        </tr>
-                        <tr><b>{{stat}}</b></tr>
-                    </table>
-                </div>
-                <div class="alert alert-info" role="alert" ng-show="emStat">{{statEm}}</div>
+            Поиск по полю должности:
+			    <div class="task">
+					<input size="70" placeholder="Введите слово..." type="text" ng-model="textSearch"/>
+                    <button class="btn btn-primary" type="button" ng-click="searchStr()" ><span class="glyphicon glyphicon-search"></span>  Найти</button>
+                    <button class="btn btn-warning" type="button" ng-click="clear()" ><span class="glyphicon glyphicon-refresh"></span>  Очистить</button>
+			    </div>
+            </form>
+            <form>
+                <button class="btn btn-info" type="button" ng-click="loadRoute()" ><span class="glyphicon glyphicon-download-alt"></span>  Загрузить</button>
+            </form>
 
+            <div ng-show="toggle">
+                <br/>
+                <div ng-show="loader.loading">
+                    <img src="./loading.gif" alt="" /> Загружается
+                </div>
+                <div class="alert alert-info" role="alert" ng-show="resumeStat">{{stat}}</div>
+                <div ng-show="resumeAccordion">
+                    <accordion close-others="oneAtATime" >
+                        <accordion-group ng-repeat="obj in objList">
+                            <accordion-heading>
+                                <b>Имя</b> - {{obj.name}},
+                                <br/>
+                                <b>Должность</b> - {{obj.header}},
+                                <br/>
+                                <b>Зарплата</b> -  {{obj.salary}}
+                                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                            </accordion-heading>
+
+                            <table class="table table-hover" >
+                                <tr>
+                                    <td>Номер резюме</td>
+                                    <td>{{obj.ide1}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Возраст (лет)</td>
+                                    <td>{{obj.age}} ({{obj.birthday}})</td>
+                                </tr>
+                                <tr>
+                                    <td>Город</td>
+                                    <td>{{obj.city}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Образование</td>
+                                    <td>{{obj.institution}} {{obj.info}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Опыт</td>
+                                    <td><span ng-bind-html-unsafe="dataFromModel | newlines">{{obj.experience}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Стаж (лет)</td>
+                                    <td>{{obj.experience_lenght}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Личные качества</td>
+                                    <td>{{obj.personal_qualities}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Сылка на E1</td>
+                                    <td><a href="http://rabota.e1.ru{{obj.urle1}}">http://rabota.e1.ru{{obj.urle1}}</a></td>
+                                </tr>
+                            </table>
+                        </accordion-group>
+                    </accordion>
+                    <pagination ng-show="pageNumberShow" ng-click="page()" total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-links="false"></pagination>
+                </div>
             </div>
 		</div>
 	</div>

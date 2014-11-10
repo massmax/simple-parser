@@ -1,17 +1,25 @@
 package ru.example.reqresp;
 
-import ru.example.reqresp.obj.ResumeObj;
+import ru.example.model.Resume;
 
 import java.util.List;
 
 public class ResponseJson {
 
-    private List<ResumeObj> respList;
+    private List<Resume> respList;
+    private Integer countPage;
 
-    public List<ResumeObj> getRespList() {
+    public List<Resume> getRespList() {
         return respList;
     }
-    public void setRespList(List<ResumeObj> respList) {
+    public void setRespList(List<Resume> respList) {
         this.respList = respList;
+    }
+
+    public Integer getCountPage() {
+        return countPage;
+    }
+    public void setCountPage(Integer countPage) {
+        this.countPage = countPage;
     }
 }

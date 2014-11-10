@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@ComponentScan
-@EnableJpaRepositories
+@ComponentScan(basePackages = { "ru.example" })
+@EnableJpaRepositories("ru.example.repository")
 //@Import(RepositoryRestMvcConfiguration.class)
 @EnableAutoConfiguration
 public class Application {
